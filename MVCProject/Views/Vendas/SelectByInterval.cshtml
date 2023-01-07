@@ -1,0 +1,74 @@
+﻿@model MVCProject.Models.VendasViewModel
+
+@{
+    ViewData["Title"] = "SelectByInterval";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<p>
+    <form asp-action="SelectByInterval" method="get">
+        <div class="form-group">
+            <input name="minDate" id="minDate" type="date" class="form-control" />
+            <input name="maxDate" id="maxDate" type="date" class="form-control" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Pesquisar" class="btn btn-primary" />
+        </div>
+    </form>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Valor
+            </th>
+            <th>
+                Data
+            </th>
+            <th>
+                Vendedor
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vendas in ViewBag.Vendas)
+        {
+            <tr>
+                <td>
+                    @vendas.Id
+                </td>
+                <td>
+                    @vendas.Valor
+                </td>
+                <td>
+                    @vendas.Data
+                </td>
+                <td>
+                    @foreach (var vendedores in ViewBag.Vendedores)
+                    {
+                        if (vendas.VendedorId == vendedores.Id)
+                        {
+                            @vendedores.Nome
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id=vendas.Id}) |
+                    @Html.ActionLink("Details", "Details", new { id=vendas.Id}) |
+                    @Html.ActionLink("Deletar", "Delete", new { id = vendas.Id },
+                new { onclick = "return confirm('Deseja realmente deletar este contato ?');" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
